@@ -41,7 +41,7 @@ const MainPage = () => {
           {/* <group> */}
           <ambientLight />
           {/* x ,y ,z 4, 20, 14 */}
-          <MapModel position={[0, 0, 0]} />
+          <MapModel scale={1} position={[0, 0, 0]} />
           {/* </group> */}
         </Canvas>
       </div>

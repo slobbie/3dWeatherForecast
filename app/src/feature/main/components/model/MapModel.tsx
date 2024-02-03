@@ -6,8 +6,6 @@ import {
   IMapModelArray,
   mapModelArray,
 } from '../../../../common/constants/3dMap';
-import LeftDetailView from '../detailView/LeftDetailView';
-import RightDetailView from '../detailView/RightDetailView';
 // import { useThree } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
