@@ -1,8 +1,8 @@
 import { Canvas } from '@react-three/fiber';
-import MapModel from '../components/model/MapModel';
+import MapModel from '@feature/main/components/model/MapModel';
 import { OrbitControls } from '@react-three/drei';
-import LeftDetailView from '../components/detailView/LeftDetailView';
-import RightDetailView from '../components/detailView/RightDetailView';
+import LeftDetailView from '@feature/main/components/detailView/LeftDetailView';
+import RightDetailView from '@feature/main/components/detailView/RightDetailView';
 
 /**
  * 메인페이지
