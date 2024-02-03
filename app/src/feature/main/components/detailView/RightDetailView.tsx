@@ -1,12 +1,12 @@
 import { Canvas } from '@react-three/fiber';
-import { SnowModel } from '../model/SnowModel';
+import { SnowModel } from '@feature/main/components/model/SnowModel';
 import { OrbitControls } from '@react-three/drei';
-import { weatherColorSet } from '../../../../common/constants/weatherColorSet';
+import { weatherColorSet } from '@common/constants/weatherColorSet';
 import styled from 'styled-components';
 // import { SunModel } from '../model/SunModel';
-import RainIcon from '../../../../assets/weather-Rain.png';
+import RainIcon from '@assets/weather-Rain.png';
 import { useEffect, useState } from 'react';
-import { IDayInfoData } from '../../interface/rightDetailView.interface';
+import { IDayInfoData } from '@feature/main/interface/rightDetailView.interface';
 
 const DayMockup = [
   {

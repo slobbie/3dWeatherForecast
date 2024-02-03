@@ -2,10 +2,7 @@ import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { useMemo, useRef, useState } from 'react';
-import {
-  IMapModelArray,
-  mapModelArray,
-} from '../../../../common/constants/3dMap';
+import { IMapModelArray, mapModelArray } from '@common/constants/3dMap';
 // import { useThree } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {

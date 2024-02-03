@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import MainPage from './feature/main/page/MainPage';
+import MainPage from '@feature/main/page/MainPage';
 
 const App = () => {
   return (
