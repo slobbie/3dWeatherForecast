@@ -1,12 +1,13 @@
 import { Canvas } from '@react-three/fiber';
 import { SnowModel } from '@feature/main/components/model/SnowModel';
-import { OrbitControls } from '@react-three/drei';
+// import { OrbitControls } from '@react-three/drei';
 import { weatherColorSet } from '@common/constants/weatherColorSet';
 import styled from 'styled-components';
 // import { SunModel } from '../model/SunModel';
 import RainIcon from '@assets/weather-Rain.png';
 import { useEffect, useState } from 'react';
 import { IDayInfoData } from '@feature/main/interface/rightDetailView.interface';
+import { weatherApi } from '@api/weather';
 
 const DayMockup = [
   {
@@ -63,6 +64,28 @@ const RightDetailView = () => {
   };
 
   useEffect(() => {
+    const getMidLandFcst = async () => {
+      // const res = await weatherApi.getMidLandFcst({
+      //   regId: '11B00000',
+      //   tmFc: '202402031800',
+      // });
+      // const midTaRes = await weatherApi.getMidTa({
+      //   regId: '11B10101',
+      //   tmFc: '202402040600',
+      // });
+
+      const vilageFcstRes = await weatherApi.getVilageFcst({
+        baseDate: '20240203',
+        baseTime: '2300',
+        nx: '55',
+        ny: '127',
+      });
+      console.log('vilageFcstRes', vilageFcstRes);
+    };
+    getMidLandFcst();
+  }, []);
+
+  useEffect(() => {
     const data = [...DayMockup];
     const newList = [...data.slice(count, DayMockup.length - 1), ...DayMockup];
     setSliderList((prevList) => [...prevList, ...newList]);
@@ -70,6 +93,11 @@ const RightDetailView = () => {
 
   return (
     <ModelDiv $BgColor={weatherColorSet.sunny}>
+      <WeatherInfoTitleBox>
+        {/* <WeatherDay>2024.01.30 화</WeatherDay> */}
+        <WeatherTitle>서울 특별시 </WeatherTitle>
+        {/* <WeatherTitle>눈 오는 날씨</WeatherTitle> */}
+      </WeatherInfoTitleBox>
       <GlassDiv>
         <ContentDiv>
           <Canvas
@@ -82,12 +110,13 @@ const RightDetailView = () => {
               // far: 2,
             }}
           >
-            <OrbitControls />
+            {/* <OrbitControls /> */}
             <directionalLight intensity={10} />
             <ambientLight />
             <SnowModel
               // position={[-0.2, 25, -0.0]}
-              position={[-0.2, 25, 0]}
+              position={[-0.1, 25, -0.03]}
+              scale={0.6}
             />
             {/* <SunModel
               // rotation={[0, Math.PI / 2, 0]}
@@ -97,9 +126,12 @@ const RightDetailView = () => {
           </Canvas>
         </ContentDiv>
         <WeatherInfoBox>
-          <WeatherDay>2024.01.30 화</WeatherDay>
-          <WeatherTitle>구름낀 날씨</WeatherTitle>
-          <UnitDiv>29</UnitDiv>
+          {/* <WeatherDay>2024.01.30 화</WeatherDay> */}
+          <UnitDiv>29°</UnitDiv>
+          <DayTemperature>
+            <div>최고 -1°</div>
+            <div>최저: -10°</div>
+          </DayTemperature>
         </WeatherInfoBox>
       </GlassDiv>
       <WeeklyBox>
@@ -109,13 +141,17 @@ const RightDetailView = () => {
         >
           {sliderList.map((item, index) => {
             return (
-              <DayInfo key={index} onClick={() => onClickDay(index)}>
+              <DayInfo
+                $isScale={index === count}
+                key={index}
+                onClick={() => onClickDay(index)}
+              >
                 <Day>{item.day}</Day>
                 <DayInfoIcon src={RainIcon} />
-                <DayTemperature>
+                {/* <DayTemperature>
                   <div>{item.max}</div>
                   <div>{item.min}</div>
-                </DayTemperature>
+                </DayTemperature> */}
               </DayInfo>
             );
           })}
@@ -130,7 +166,7 @@ export default RightDetailView;
 const ModelDiv = styled.div<{ $BgColor: string }>`
   position: absolute;
   z-index: 100;
-  width: 50%;
+  width: 30%;
   height: 100vh;
   top: 0;
   right: 0;
@@ -147,6 +183,10 @@ const ModelDiv = styled.div<{ $BgColor: string }>`
   backdrop-filter: blur(2.5px);
   -webkit-backdrop-filter: blur(2.5px);
   align-items: center;
+  padding-top: 5%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const GlassDiv = styled.div`
@@ -196,17 +236,19 @@ const ContentDiv = styled.div`
   flex-direction: column;
 `;
 
+const WeatherInfoTitleBox = styled.div``;
+
 const WeatherInfoBox = styled.div`
   margin-right: 10%;
 `;
 
-const WeatherDay = styled.div`
-  font-size: 30px;
-  color: #fff;
-  /* font-weight: lighter; */
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
+// const WeatherDay = styled.div`
+//   font-size: 30px;
+//   color: #fff;
+//   /* font-weight: lighter; */
+//   font-weight: bold;
+//   margin-bottom: 10px;
+// `;
 
 const WeatherTitle = styled.div`
   font-size: 30px;
@@ -225,8 +267,7 @@ const WeeklyBox = styled.div`
   top: 20%;
   position: relative;
   width: 80%;
-  height: 16%;
-  /* height: 55%; */
+  height: 23%;
   overflow: hidden;
   display: flex;
   flex-direction: row;
@@ -235,11 +276,12 @@ const WeeklyBox = styled.div`
   overflow: hidden;
 `;
 
-const DayInfo = styled.div`
+const DayInfo = styled.div<{ $isScale: boolean }>`
   width: calc(150px - 20px);
   height: calc(150px - 20px);
   min-width: 150px;
-  background: rgba(74, 74, 74, 0.36);
+  background: ${(props) =>
+    props.$isScale ? 'rgba(74, 74, 74, 0.8)' : 'rgba(74, 74, 74, 0.36)'};
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(2.5px);
@@ -271,6 +313,7 @@ const Day = styled.div`
 
 const DayTemperature = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   width: 100%;
   div {

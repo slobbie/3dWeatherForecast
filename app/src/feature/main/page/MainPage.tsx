@@ -45,7 +45,7 @@ const MainPage = () => {
           {/* </group> */}
         </Canvas>
       </div>
-      <LeftDetailView />
+      {/* <LeftDetailView /> */}
       <RightDetailView />
     </div>
   );
