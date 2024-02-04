@@ -23,6 +23,7 @@
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
+      "@api/*": ["src/api/*"],
       "@assets/*": ["src/assets/*"],
       "@common/*": ["src/common/*", ".src/common/*"],
       "@routes/*": ["src/routes/*", "src/routes/"],
